@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
-import { authURL } from './UserAuth.js'
+import { authURL } from './Components/UserAuth.js';
+import { errorPage } from './Components/errorpage.js';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+      <authURL />
+      </div>
+      <div>
+      <errorPage />
       </div>
     );
   }

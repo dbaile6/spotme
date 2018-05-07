@@ -1,19 +1,4 @@
-import React, { Component } from 'react';
-import './App.css';
-import { authURL } from './Components/UserAuth.js';
-import { errorPage } from './Components/errorpage.js';
+import ReactDOM from 'react-dom'
+import routes from './routes.jsx'
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-      <authURL />
-      </div>
-      <div>
-      <errorPage />
-      </div>
-    );
-  }
-}
-
-export default App;
+ReactDOM.render(routes, document.getElementById('root'))

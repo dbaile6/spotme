@@ -1,7 +1,7 @@
 import React from 'react'
 import Config from '../public/developer.json'
 
-export default class Auth extends React.Component {
+export class Auth extends React.Component {
     render() {
         const hostUrl = 'https://accounts.spotify.com'
         const urlRedirect = `${window.location.protocol}//${window.location.hostUrl}/auth`

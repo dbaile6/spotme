@@ -1,0 +1,26 @@
+.footer .separator {
+  display: inline-block;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+#root {
+  flex: 1 0 auto;
+}
+
+.button.spotify-button {
+  background-color: #57b660;
+  color: #fff;
+}
+
+.button.spotify-button:hover,
+.button.spotify-button:focus {
+  background-color: #5bbe63;
+  color: #fff;
+}

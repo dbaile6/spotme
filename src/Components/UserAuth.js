@@ -5,10 +5,10 @@ import Config from '../public/config'
 export default class UserAuth extends React.Component {
   render() {
     const host = 'https://accounts.spotify.com'
-    const redirectUri = `${window.location.protocol}//${window.location.host}/auth`
+    const redirectURI = `${window.location.protocol}//${window.location.host}/auth`
     const scopes = 'user-library-read playlist-modify-public'
-    const authUrl = `${host}/authorize?response_type=token` +
-      `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+    const authURL = `${host}/authorize?response_type=token` +
+      `&redirect_uri=${encodeURIComponent(redirectURI)}` +
       `&client_id=${Config.spotify.clientId}` +
       `&scope=${encodeURIComponent(scopes)}`
     return (
@@ -20,7 +20,7 @@ export default class UserAuth extends React.Component {
             </h2>
             <p>
               <a
-                href={authUrl}
+                href={authURL}
                 className="spotify-button is-primary button is-large"
               >Sign into Spotify</a>
             </p>

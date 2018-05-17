@@ -1,27 +1,27 @@
 import React from 'react'
 
-import WeekTrackList from './week-track-list.jsx'
+import WeeklyTrackList from './WeeklyTrackList.js'
 
-class WeekList extends React.Component {
+class WeeklyList extends React.Component {
   render() {
     const { tracks, avgLoudness } = this.props
-    const tracksByWeek = {}
+    const weeklyTracks = {}
     for (const track of tracks) {
       const key = track.week.toISOString()
-      if (!tracksByWeek.hasOwnProperty(key)) {
-        tracksByWeek[key] = []
+      if (!weeklyTracks.hasOwnProperty(key)) {
+        weeklyTracks[key] = []
       }
-      tracksByWeek[key].push(track)
+      weeklyTracks[key].push(track)
     }
-    const weeks = Object.keys(tracksByWeek)
+    const weeks = Object.keys(weeklyTracks)
     return (
       <div className="week-list-container">
-        <h2 className="title is-2">Recently saved tracks</h2>
+        <h2 className="title is-2">Recent Songs</h2>
         {weeks.map(weekStr => (
           <WeekTrackList
             key={weekStr}
             week={weekStr}
-            tracks={tracksByWeek[weekStr]}
+            tracks={weeklyTracks[weekStr]}
             avgLoudness={avgLoudness}
           />
         ))}

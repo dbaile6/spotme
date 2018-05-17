@@ -1,6 +1,6 @@
 import React from 'react'
 
-import TrackItems from './TrackItems.jsx'
+import TrackItems from './TrackItems.js'
 
 const months = [
   'January', 'February', 'March', 'April', 'May', 'June', 'July',
@@ -8,12 +8,12 @@ const months = [
 ]
 
 class WeeklyTrackList extends React.Component {
-  label() {
+  dates() {
     const date = new Date(this.props.week)
     const month = months[date.getMonth()]
     const day = date.getDate()
     const year = date.getFullYear()
-    return `Week of ${month} ${day}, ${year}`
+    return `${month} ${day}, ${year}`
   }
 
   trackCount() {
@@ -28,8 +28,8 @@ class WeeklyTrackList extends React.Component {
     const { tracks, avgLoudness } = this.props
     return (
       <dl className="week-track-list">
-        <dt className="title is-3">
-          {this.label()}
+        <dt className="title is-2">
+          {this.dates()}
           <span className="track-count">{this.trackCount()}</span>
         </dt>
         <dd>

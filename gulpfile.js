@@ -1,61 +1,74 @@
-let gulp = require('gulp')
-let sourcemaps = require('gulp-sourcemaps')
-let nodemon = require('gulp-nodemon')
-let source = require('vinyl-source-stream')
-let buffer = require('vinyl-buffer')
-let browserify = require('browserify')
-let watchify = require('watchify')
+const gulp = require('gulp')
+const sourcemaps = require('gulp-sourcemaps')
+const nodemon = require('gulp-nodemon')
 
-function putTogether(watch) {
-    let bundler = watchify(
-        browserify('./src/index.js', {
-            debug: true
-        }).transform('babelify', {
-            presets: ['es2015', 'react']
-        })
-    )
+const source = require('vinyl-source-stream')
+const buffer = require('vinyl-buffer')
 
-    function rePut() {
-        bundler.bundle().on('error', function (err) {
-            console.error(err)
-            this.emit('end')
-        }).pipe(source('bundle.js')).
-        pipe(buffer()).
-        pipe(sourcemaps.init({
-            loadMaps: true
-        })).
-        pipe(sourcemaps.write('./')).
-        pipe(gulp.dest('./src/public'))
-    }
+const browserify = require('browserify')
+const watchify = require('watchify')
 
-    if (watch) {
-        bundler.on('update', function () {
-            let date = new Date()
-            let timestamp = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-            console.log(`[${timestamp}] bundling...`)
-            rePut()
-        })
-    }
+function getTimeSegment(date, funcName) {
+  const timeSegment = date[funcName]()
+  if (timeSegment < 10) {
+    return `0${timeSegment}`
+  }
+  return timeSegment
+}
 
-    rePut()
+function getTimestamp() {
+  const date = new Date()
+  const hours = getTimeSegment(date, 'getHours')
+  const minutes = getTimeSegment(date, 'getMinutes')
+  const seconds = getTimeSegment(date, 'getSeconds')
+  return `${hours}:${minutes}:${seconds}`
+}
+
+function compile(watch) {
+  const bundler = watchify(
+    browserify('./src/index.jsx', { debug: true }).
+      transform('babelify', { presets: ['es2015', 'react'] })
+  )
+
+  function rebundle() {
+    bundler.bundle().on('error', function(err) {
+      console.error(err)
+      this.emit('end')
+    }).pipe(source('bundle.js')).
+       pipe(buffer()).
+       pipe(sourcemaps.init({ loadMaps: true })).
+       pipe(sourcemaps.write('./')).
+       pipe(gulp.dest('./src/public')).
+       on('end', () => {
+         console.log(`[${getTimestamp()}] done!`)
+       })
+  }
+
+  function onUpdate() {
+    console.log(`[${getTimestamp()}] bundling...`)
+    rebundle()
+  }
+
+  if (watch) {
+    bundler.on('update', onUpdate)
+  }
+
+  rebundle()
 }
 
 function watch() {
-    return putTogether(true)
+  return compile(true)
 }
 
-gulp.task('build', function () {
-    return putTogether()
-})
-gulp.task('watch', function () {
-    return watch()
-})
+function build() {
+  return compile()
+}
 
-gulp.task('serve', function () {
-    nodemon({
-        script: 'src/server.js',
-        ignore: 'src/public/bundle.js'
-    })
-})
+function serve() {
+  nodemon({ script: 'src/server.js', ignore: 'src/public/bundle.js' })
+}
 
+gulp.task('build', build)
+gulp.task('watch', watch)
+gulp.task('serve', serve)
 gulp.task('default', ['watch', 'serve'])

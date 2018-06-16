@@ -1,8 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import routes from './routes';
-import registerServiceWorker from './registerServiceWorker';
+import Promise from 'promise-polyfill'
+import ReactDOM from 'react-dom'
 
-ReactDOM.render(<routes />, document.getElementById('root'));
-registerServiceWorker();
+import routes from './routes.js'
+
+if (!window.Promise) {
+  window.Promise = Promise
+}
+
+ReactDOM.render(routes, document.getElementById('root'))
